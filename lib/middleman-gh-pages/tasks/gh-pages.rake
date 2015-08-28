@@ -3,6 +3,16 @@ require 'fileutils'
 def remote_name
   ENV.fetch("REMOTE_NAME", "origin")
 end
+
+def repo_url
+  computed = nil
+  cd PROJECT_ROOT do
+    computed =`git config --get remote.#{remote_name}.url`.strip
+  end
+
+  ENV.fetch("REMOTE_URL", computed)
+end
+
 def branch_name
   ENV.fetch("BRANCH_NAME", "gh-pages")
 end
@@ -14,11 +24,6 @@ GH_PAGES_REF = File.join(BUILD_DIR, ".git/refs/remotes/#{remote_name}/#{branch_n
 directory BUILD_DIR
 
 file GH_PAGES_REF => BUILD_DIR do
-  repo_url = nil
-
-  cd PROJECT_ROOT do
-    repo_url = `git config --get remote.#{remote_name}.url`.strip
-  end
 
   cd BUILD_DIR do
     sh "git init"
