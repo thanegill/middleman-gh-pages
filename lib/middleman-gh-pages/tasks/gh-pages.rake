@@ -70,10 +70,7 @@ task :build do
 end
 
 desc "Build and publish to Github Pages"
-task :publish => [:not_dirty, :prepare_git_remote_in_build_dir, :sync] do
-  Rake::Task['build'].invoke
-  Rake::Task['deploy'].invoke
-end
+task :publish => [:not_dirty, :prepare_git_remote_in_build_dir, :sync, :build, :deploy]
 
 desc "Deploys build directory without building"
 task :deploy => [:not_dirty, :prepare_git_remote_in_build_dir, :sync] do
