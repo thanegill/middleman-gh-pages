@@ -64,14 +64,7 @@ task :build do
   end
 end
 
-desc "Build and publish to Github Pages"
-task :publish => [:not_dirty, :prepare_git_remote_in_build_dir, :sync] do
-  Rake::Task['build'].invoke
-  Rake::Task['deploy'].invoke
-end
-
-desc "Deploys build directory without building"
-task :deploy => [:not_dirty, :prepare_git_remote_in_build_dir, :sync] do
+def deploy
   message = nil
   suffix = ENV["COMMIT_MESSAGE_SUFFIX"]
 
@@ -89,4 +82,15 @@ task :deploy => [:not_dirty, :prepare_git_remote_in_build_dir, :sync] do
     end
     sh "git push #{remote_name} #{branch_name}"
   end
+end
+
+desc "Build and publish to Github Pages"
+task :publish => [:not_dirty, :prepare_git_remote_in_build_dir, :sync, :build] do
+  Rake::Task['build'].invoke
+  deploy
+end
+
+desc "Deploys build directory without building"
+task :deploy => [:not_dirty, :prepare_git_remote_in_build_dir, :sync] do
+  deploy
 end
