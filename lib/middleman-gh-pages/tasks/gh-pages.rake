@@ -23,7 +23,7 @@ file GH_PAGES_REF => BUILD_DIR do
   cd BUILD_DIR do
     sh "git init"
     sh "git remote add #{remote_name} #{repo_url}"
-    sh "git fetch #{remote_name}"
+    sh "git fetch #{remote_name} master:refs/remotes/origin/master"
 
     if `git branch -r` =~ /#{branch_name}/
       sh "git checkout #{branch_name}"
@@ -43,7 +43,7 @@ task :prepare_git_remote_in_build_dir => GH_PAGES_REF
 # Fetch upstream changes on gh-pages branch
 task :sync do
   cd BUILD_DIR do
-    sh "git fetch #{remote_name}"
+    sh "git fetch #{remote_name} master:refs/remotes/origin/master"
     sh "git reset --hard #{remote_name}/#{branch_name}"
   end
 end
