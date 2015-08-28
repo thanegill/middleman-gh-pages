@@ -51,6 +51,7 @@ end
 # Prevent accidental publishing before committing changes
 task :not_dirty do
   puts "***#{ENV['ALLOW_DIRTY']}***"
+  sh 'git status'
   unless ENV['ALLOW_DIRTY']
     fail "Directory not clean" if /nothing to commit/ !~ `git status`
   end
