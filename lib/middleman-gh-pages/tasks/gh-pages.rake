@@ -82,13 +82,11 @@ task :deploy => [:not_dirty, :prepare_git_remote_in_build_dir, :sync] do
     message = ["Site updated to #{head}", suffix].compact.join("\n\n")
   end
 
-  cd BUILD_DIR do
-    sh 'git add --all'
-    if /nothing to commit/ =~ `git status`
-      puts 'No changes to commit.'
-    else
-      sh "git commit -m \"#{message}\""
-    end
-    sh "git push #{remote_name} #{branch_name}"
+  sh "git add --all :#{BUILD_DIR}/"
+  if /nothing to commit/ =~ `git status`
+    puts 'No changes to commit.'
+  else
+    sh "git commit -m \"#{message}\""
   end
+    sh "git push #{remote_name} #{branch_name}"
 end
