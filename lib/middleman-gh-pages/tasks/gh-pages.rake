@@ -35,7 +35,7 @@ file GH_PAGES_REF => BUILD_DIR do
     else
       sh "git checkout --orphan #{branch_name}"
       sh 'touch index.html'
-      sh "git add ."
+      sh 'git add .'
       sh 'git commit -m 'initial gh-pages commit''
       sh "git push #{remote_name} #{branch_name}"
     end
@@ -62,10 +62,10 @@ task :not_dirty do
   end
 end
 
-desc "Compile all files into the build directory"
+desc 'Compile all files into the build directory'
 task :build do
   cd PROJECT_ROOT do
-    sh "bundle exec middleman build --clean"
+    sh 'bundle exec middleman build --clean'
   end
 end
 
